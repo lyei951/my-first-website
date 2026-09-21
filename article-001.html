@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>开始做这个网站 — LYEI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f7f7f5;
+            color: #111;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "PingFang SC",
+                "Microsoft YaHei",
+                sans-serif;
+            line-height: 1.8;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page {
+            width: min(900px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+
+        /* 顶部 */
+
+        header {
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #d8d8d4;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+        }
+
+        .back {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .back:hover {
+            color: #111;
+        }
+
+        /* 文章 */
+
+        article {
+            padding: 100px 0 120px;
+        }
+
+        .date {
+            font-family: "Courier New", monospace;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: clamp(42px, 7vw, 76px);
+            line-height: 1.05;
+            letter-spacing: -0.05em;
+            font-weight: 700;
+            margin-bottom: 55px;
+        }
+
+        .intro {
+            font-size: 20px;
+            line-height: 1.9;
+            margin-bottom: 55px;
+            color: #333;
+        }
+
+        .content {
+            max-width: 680px;
+            font-size: 16px;
+            line-height: 2;
+            color: #333;
+        }
+
+        .content p {
+            margin-bottom: 28px;
+        }
+
+        .content .quote {
+            border-left: 2px solid #111;
+            padding-left: 25px;
+            margin: 45px 0;
+            font-size: 19px;
+            color: #222;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: #d8d8d4;
+            margin: 70px 0 35px;
+        }
+
+        .end {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* 底部 */
+
+        footer {
+            border-top: 1px solid #d8d8d4;
+            padding: 35px 0 50px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* 手机 */
+
+        @media (max-width: 700px) {
+
+            .page {
+                width: min(100% - 30px, 900px);
+            }
+
+            header {
+                height: 70px;
+            }
+
+            article {
+                padding: 70px 0 90px;
+            }
+
+            h1 {
+                font-size: 48px;
+                margin-bottom: 40px;
+            }
+
+            .intro {
+                font-size: 17px;
+            }
+
+            .content {
+                font-size: 15px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- 顶部 -->
+    <header>
+
+        <a href="index.html" class="logo">
+            LYEI
+        </a>
+
+        <a href="index.html" class="back">
+            ← 返回首页
+        </a>
+
+    </header>
+
+
+    <!-- 文章 -->
+    <article>
+
+        <div class="date">
+            2026.09.21
+        </div>
+
+        <h1>
+            开始做这个网站
+        </h1>
+
+
+        <div class="intro">
+            突然觉得，应该给自己留一个可以随便记录东西的地方。
+        </div>
+
+
+        <div class="content">
+
+            <p>
+                今天开始做这个网站。
+            </p>
+
+            <p>
+                其实也没有特别明确的目的。
+                不想把它做成一个正经的博客，也没打算靠它展示什么。
+                就只是觉得，互联网这么大，好像应该有一个真正属于自己的小角落。
+            </p>
+
+            <p>
+                可以在这里写一些生活里的事情。
+                可以记录突然想到的一个问题，
+                可以放几张照片，
+                也可以只是写下一句当时觉得有意思的话。
+            </p>
+
+            <div class="quote">
+                有些东西不一定需要被别人看到，
+                但我还是想把它留下来。
+            </div>
+
+            <p>
+                所以就有了这个网站。
+            </p>
+
+            <p>
+                以后这里可能会越来越乱。
+                可能会有一些很无聊的记录，
+                也可能会有一些过了一段时间之后自己都不记得为什么写下来的东西。
+            </p>
+
+            <p>
+                但我觉得这也没什么。
+            </p>
+
+            <p>
+                毕竟这里本来就是用来记录自己的。
+            </p>
+
+            <div class="divider"></div>
+
+            <div class="end">
+                这是第一篇记录。
+            </div>
+
+        </div>
+
+    </article>
+
+
+    <!-- 底部 -->
+    <footer>
+
+        <span>
+            LYEI
+        </span>
+
+        <span>
+            A personal archive on the internet.
+        </span>
+
+    </footer>
+
+</div>
+
+</body>
+</html>
