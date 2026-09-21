@@ -542,85 +542,113 @@
 
 <script>
 
+    /* =========================================================
+       Supabase 配置
+       ========================================================= */
 
-    /*
-     * ============================
-     * 数据
-     * ============================
-     */
+    const SUPABASE_URL = "https://nbboyfmxehuptlxhnhjt.supabase.co/rest/v1/";
+    const SUPABASE_KEY = "sb_publishable_Vb8erSWvJdK8SUEYuByxYA_c8DeoC-U";
 
-    const STORAGE_KEY = "lyei_photos";
+    const BUCKET_NAME = "photos";
 
 
-    /*
-     * 当前正在准备上传的照片
-     *
-     * 这里非常重要：
-     *
-     * 每次添加照片时，
-     * 都会 push 到这个数组。
-     *
-     * 不会清空之前的照片。
-     */
+    /* =========================================================
+       当前正在准备上传的照片
+       ========================================================= */
 
     let selectedImages = [];
 
 
+    /* =========================================================
+       Supabase 请求头
+       ========================================================= */
 
-    /*
-     * ============================
-     * 获取已经保存的照片
-     * ============================
-     */
+    function supabaseHeaders() {
 
-    function getPhotos() {
+        return {
+            "apikey": SUPABASE_KEY,
+            "Authorization": `Bearer ${SUPABASE_KEY}`,
+            "Content-Type": "application/json"
+        };
 
-        return JSON.parse(
-            localStorage.getItem(STORAGE_KEY) || "[]"
+    }
+
+
+    /* =========================================================
+       从 Data URL 转成 Blob
+       ========================================================= */
+
+    function dataURLToBlob(dataURL) {
+
+        const parts = dataURL.split(",");
+
+        const mimeMatch =
+            parts[0].match(/:(.*?);/);
+
+        const mime =
+            mimeMatch
+                ? mimeMatch[1]
+                : "image/jpeg";
+
+        const binary =
+            atob(parts[1]);
+
+        const array =
+            new Uint8Array(
+                binary.length
+            );
+
+        for (
+            let i = 0;
+            i < binary.length;
+            i++
+        ) {
+
+            array[i] =
+                binary.charCodeAt(i);
+
+        }
+
+        return new Blob(
+            [array],
+            {
+                type: mime
+            }
         );
 
     }
 
 
+    /* =========================================================
+       获取文件扩展名
+       ========================================================= */
 
-    /*
-     * ============================
-     * 保存到浏览器
-     * ============================
-     */
+    function getExtension(dataURL) {
 
-    function savePhotosToStorage(photos) {
+        if (dataURL.includes("image/png")) {
+            return "png";
+        }
 
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(photos)
-        );
+        if (dataURL.includes("image/webp")) {
+            return "webp";
+        }
+
+        if (dataURL.includes("image/gif")) {
+            return "gif";
+        }
+
+        if (dataURL.includes("image/heic")) {
+            return "heic";
+        }
+
+        return "jpg";
 
     }
 
 
-
-    /*
-     * ============================
-     * 选择照片
-     * ============================
-     *
-     * 可以反复选择。
-     *
-     * 第一次：
-     *
-     * A
-     *
-     * 第二次：
-     *
-     * A + B
-     *
-     * 第三次：
-     *
-     * A + B + C
-     *
-     * 不会覆盖。
-     */
+    /* =========================================================
+       选择照片
+       ========================================================= */
 
     document
         .getElementById("fileInput")
@@ -628,12 +656,10 @@
             "change",
             function(event) {
 
-
                 const files =
                     Array.from(
                         event.target.files
                     );
-
 
                 if (!files.length) {
                     return;
@@ -646,22 +672,12 @@
                 files.forEach(
                     file => {
 
-
                         const reader =
                             new FileReader();
 
 
                         reader.onload =
                             function(e) {
-
-
-                                /*
-                                 * 关键：
-                                 *
-                                 * push
-                                 *
-                                 * 而不是重新赋值。
-                                 */
 
                                 selectedImages.push(
                                     e.target.result
@@ -670,11 +686,6 @@
 
                                 loaded++;
 
-
-                                /*
-                                 * 所有新选择的照片
-                                 * 都读取完成后刷新预览。
-                                 */
 
                                 if (
                                     loaded ===
@@ -695,57 +706,42 @@
 
 
                 /*
-                 * 清空 input 的值。
+                 * 清空 input
                  *
-                 * 这样用户可以：
+                 * 这样可以连续选择：
                  *
-                 * 选择 A
-                 *
-                 * 再次选择 A
-                 *
-                 * 再次选择 B
-                 *
-                 * 都能触发 change。
+                 * A
+                 * A + B
+                 * A + B + C
                  */
 
                 event.target.value = "";
-
 
             }
         );
 
 
-
-    /*
-     * ============================
-     * 显示待上传照片
-     * ============================
-     */
+    /* =========================================================
+       显示待上传照片
+       ========================================================= */
 
     function renderPreview() {
-
 
         const preview =
             document.getElementById(
                 "preview"
             );
 
-
         const grid =
             document.getElementById(
                 "previewGrid"
             );
-
 
         const count =
             document.getElementById(
                 "photoCount"
             );
 
-
-        /*
-         * 没有照片
-         */
 
         if (
             selectedImages.length === 0
@@ -763,34 +759,20 @@
         }
 
 
-        /*
-         * 显示预览区域
-         */
-
         preview.style.display =
             "block";
 
 
-        /*
-         * 清空旧预览
-         */
-
         grid.innerHTML = "";
 
 
-        /*
-         * 重新生成所有预览
-         */
-
         selectedImages.forEach(
             (image, index) => {
-
 
                 const item =
                     document.createElement(
                         "div"
                     );
-
 
                 item.className =
                     "preview-item";
@@ -801,35 +783,24 @@
                         "img"
                     );
 
-
                 img.src = image;
-
 
                 item.appendChild(img);
 
-
-
-                /*
-                 * 删除按钮
-                 */
 
                 const removeButton =
                     document.createElement(
                         "button"
                     );
 
-
                 removeButton.className =
                     "remove-preview";
-
 
                 removeButton.type =
                     "button";
 
-
                 removeButton.textContent =
                     "×";
-
 
                 removeButton.title =
                     "移除这张照片";
@@ -854,14 +825,9 @@
                     item
                 );
 
-
             }
         );
 
-
-        /*
-         * 数量
-         */
 
         count.textContent =
             `已选择 ${selectedImages.length} 张照片`;
@@ -869,42 +835,96 @@
     }
 
 
+    /* =========================================================
+       删除待上传照片
+       ========================================================= */
 
-    /*
-     * ============================
-     * 删除待上传照片
-     * ============================
-     */
-
-    function removeSelectedImage(
-        index
-    ) {
-
+    function removeSelectedImage(index) {
 
         selectedImages.splice(
             index,
             1
         );
 
-
         renderPreview();
 
     }
 
 
+    /* =========================================================
+       上传一张照片到 Supabase Storage
+       ========================================================= */
 
-    /*
-     * ============================
-     * 保存整组照片
-     * ============================
-     */
+    async function uploadImage(
+        dataURL,
+        groupFolder,
+        index
+    ) {
 
-    function savePhotoGroup() {
+        const blob =
+            dataURLToBlob(dataURL);
+
+        const extension =
+            getExtension(dataURL);
+
+
+        const fileName =
+            `${groupFolder}/${Date.now()}-${index}.${extension}`;
+
+
+        const uploadURL =
+            `${SUPABASE_URL}/storage/v1/object/${BUCKET_NAME}/${fileName}`;
+
+
+        const response =
+            await fetch(
+                uploadURL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "apikey": SUPABASE_KEY,
+                        "Authorization":
+                            `Bearer ${SUPABASE_KEY}`,
+                        "Content-Type":
+                            blob.type
+                    },
+
+                    body: blob
+                }
+            );
+
+
+        if (!response.ok) {
+
+            const errorText =
+                await response.text();
+
+            throw new Error(
+                `图片上传失败：${errorText}`
+            );
+
+        }
 
 
         /*
-         * 没有照片
+         * Public Bucket 的图片地址
          */
+
+        return (
+            `${SUPABASE_URL}` +
+            `/storage/v1/object/public/` +
+            `${BUCKET_NAME}/${fileName}`
+        );
+
+    }
+
+
+    /* =========================================================
+       保存整组照片
+       ========================================================= */
+
+    async function savePhotoGroup() {
 
         if (
             selectedImages.length === 0
@@ -919,10 +939,6 @@
         }
 
 
-        /*
-         * 获取文字
-         */
-
         const caption =
             document
                 .getElementById(
@@ -932,138 +948,377 @@
                 .trim();
 
 
-        /*
-         * 获取旧照片
-         */
-
-        const photos =
-            getPhotos();
-
-
-        /*
-         * 创建一组照片
-         */
-
-        const photoGroup = {
-
-            id: Date.now(),
-
-            images: [
-                ...selectedImages
-            ],
-
-            caption: caption,
-
-            time:
-                new Date().toLocaleString(
-                    "zh-CN",
-                    {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    }
-                )
-
-        };
-
-
-        /*
-         * 新照片放在最前面
-         */
-
-        photos.unshift(
-            photoGroup
-        );
-
-
-        /*
-         * 保存
-         */
-
-        savePhotosToStorage(
-            photos
-        );
-
-
-        /*
-         * 清空当前待上传内容
-         */
-
-        selectedImages = [];
-
-
-        document
-            .getElementById(
-                "captionInput"
-            )
-            .value = "";
-
-
-        document
-            .getElementById(
-                "fileInput"
-            )
-            .value = "";
-
-
-        /*
-         * 更新预览
-         */
-
-        renderPreview();
-
-
-        /*
-         * 更新照片列表
-         */
-
-        renderPhotos();
-
-    }
-
-
-
-    /*
-     * ============================
-     * 删除已经保存的一组照片
-     * ============================
-     */
-
-    function deletePhotoGroup(id) {
-
-
-        const photos =
-            getPhotos();
-
-
-        const newPhotos =
-            photos.filter(
-                photo =>
-                    photo.id !== id
+        const saveButton =
+            document.querySelector(
+                ".save-btn"
             );
 
 
-        savePhotosToStorage(
-            newPhotos
-        );
+        /*
+         * 防止用户连续点击保存
+         */
+
+        saveButton.disabled =
+            true;
+
+        saveButton.textContent =
+            "正在保存……";
 
 
-        renderPhotos();
+        try {
+
+            /*
+             * 每一组照片使用一个独立文件夹
+             */
+
+            const groupFolder =
+                `group-${Date.now()}-${Math.random()
+                    .toString(36)
+                    .substring(2, 8)}`;
+
+
+            /*
+             * 上传所有照片
+             */
+
+            const imageURLs = [];
+
+
+            for (
+                let i = 0;
+                i < selectedImages.length;
+                i++
+            ) {
+
+                const imageURL =
+                    await uploadImage(
+                        selectedImages[i],
+                        groupFolder,
+                        i
+                    );
+
+
+                imageURLs.push(
+                    imageURL
+                );
+
+            }
+
+
+            /*
+             * 把照片地址写入 photos 表
+             */
+
+            const insertURL =
+                `${SUPABASE_URL}/rest/v1/photos`;
+
+
+            const response =
+                await fetch(
+                    insertURL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            ...supabaseHeaders(),
+
+                            "Prefer":
+                                "return=representation"
+                        },
+
+                        body: JSON.stringify({
+                            caption: caption,
+                            images: imageURLs
+                        })
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                const errorText =
+                    await response.text();
+
+                throw new Error(
+                    `数据库保存失败：${errorText}`
+                );
+
+            }
+
+
+            /*
+             * 清空当前上传区域
+             */
+
+            selectedImages = [];
+
+
+            document
+                .getElementById(
+                    "captionInput"
+                )
+                .value = "";
+
+
+            document
+                .getElementById(
+                    "fileInput"
+                )
+                .value = "";
+
+
+            renderPreview();
+
+
+            /*
+             * 重新读取照片
+             */
+
+            await renderPhotos();
+
+
+            alert(
+                "照片保存成功！"
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                error
+            );
+
+            alert(
+                "保存失败：\n\n" +
+                error.message
+            );
+
+        }
+
+        finally {
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "保存这些照片";
+
+        }
 
     }
 
 
+    /* =========================================================
+       从 Supabase 获取照片
+       ========================================================= */
 
-    /*
-     * ============================
-     * 显示已经保存的照片
-     * ============================
-     */
+    async function getPhotos() {
 
-    function renderPhotos() {
+        const url =
+            `${SUPABASE_URL}` +
+            `/rest/v1/photos` +
+            `?select=*` +
+            `&order=created_at.desc`;
 
+
+        const response =
+            await fetch(
+                url,
+                {
+                    method: "GET",
+
+                    headers:
+                        supabaseHeaders()
+                }
+            );
+
+
+        if (!response.ok) {
+
+            const errorText =
+                await response.text();
+
+            throw new Error(
+                `读取照片失败：${errorText}`
+            );
+
+        }
+
+
+        return await response.json();
+
+    }
+
+
+    /* =========================================================
+       删除照片组
+       ========================================================= */
+
+    async function deletePhotoGroup(
+        id,
+        imageURLs
+    ) {
+
+        const confirmDelete =
+            confirm(
+                "确定要删除这一组照片吗？"
+            );
+
+
+        if (!confirmDelete) {
+            return;
+        }
+
+
+        try {
+
+            /*
+             * 先从数据库删除记录
+             */
+
+            const deleteURL =
+                `${SUPABASE_URL}` +
+                `/rest/v1/photos` +
+                `?id=eq.${id}`;
+
+
+            const response =
+                await fetch(
+                    deleteURL,
+                    {
+                        method: "DELETE",
+
+                        headers:
+                            supabaseHeaders()
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                const errorText =
+                    await response.text();
+
+                throw new Error(
+                    `删除数据库记录失败：${errorText}`
+                );
+
+            }
+
+
+            /*
+             * 删除 Storage 里的实际图片
+             */
+
+            if (
+                imageURLs &&
+                imageURLs.length
+            ) {
+
+                const paths =
+                    imageURLs.map(
+                        url => {
+
+                            const marker =
+                                `/storage/v1/object/public/${BUCKET_NAME}/`;
+
+                            const position =
+                                url.indexOf(
+                                    marker
+                                );
+
+                            if (
+                                position === -1
+                            ) {
+                                return null;
+                            }
+
+                            return url.substring(
+                                position +
+                                marker.length
+                            );
+
+                        }
+                    )
+                    .filter(
+                        path => path
+                    );
+
+
+                if (paths.length) {
+
+                    const removeURL =
+                        `${SUPABASE_URL}` +
+                        `/storage/v1/object/${BUCKET_NAME}`;
+
+
+                    const storageResponse =
+                        await fetch(
+                            removeURL,
+                            {
+                                method: "DELETE",
+
+                                headers: {
+                                    ...supabaseHeaders(),
+
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+                                        prefixes: paths
+                                    })
+                            }
+                        );
+
+
+                    /*
+                     * Storage 删除失败时，
+                     * 不影响数据库已经删除。
+                     */
+
+                    if (
+                        !storageResponse.ok
+                    ) {
+
+                        console.warn(
+                            "Storage 图片删除失败"
+                        );
+
+                    }
+
+                }
+
+            }
+
+
+            await renderPhotos();
+
+        }
+
+        catch (error) {
+
+            console.error(
+                error
+            );
+
+            alert(
+                "删除失败：\n\n" +
+                error.message
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       显示已经保存的照片
+       ========================================================= */
+
+    async function renderPhotos() {
 
         const container =
             document.getElementById(
@@ -1071,104 +1326,231 @@
             );
 
 
-        const photos =
-            getPhotos();
+        container.innerHTML =
+            '<div class="empty">正在加载照片……</div>';
 
 
-        /*
-         * 没有照片
-         */
+        try {
 
-        if (
-            photos.length === 0
-        ) {
+            const photos =
+                await getPhotos();
+
+
+            if (
+                photos.length === 0
+            ) {
+
+                container.innerHTML =
+                    '<div class="empty">还没有照片。</div>';
+
+                return;
+
+            }
+
 
             container.innerHTML =
-                '<div class="empty">还没有照片。</div>';
+                photos
+                    .map(
+                        photo => {
 
-            return;
+                            /*
+                             * images 是 jsonb
+                             */
+
+                            let images =
+                                photo.images;
+
+
+                            /*
+                             * 如果数据库返回的是字符串，
+                             * 尝试转换成数组。
+                             */
+
+                            if (
+                                typeof images ===
+                                "string"
+                            ) {
+
+                                try {
+
+                                    images =
+                                        JSON.parse(
+                                            images
+                                        );
+
+                                }
+
+                                catch {
+
+                                    images = [];
+
+                                }
+
+                            }
+
+
+                            if (
+                                !Array.isArray(
+                                    images
+                                )
+                            ) {
+
+                                images = [];
+
+                            }
+
+
+                            return `
+
+                                <div
+                                    class="photo-entry"
+                                >
+
+                                    <div
+                                        class="photo-time"
+                                    >
+                                        ${formatTime(
+                                            photo.created_at
+                                        )}
+                                    </div>
+
+
+                                    <div
+                                        class="photo-grid"
+                                    >
+
+                                        ${images
+                                            .map(
+                                                image => `
+
+                                                    <img
+                                                        src="${escapeHTML(
+                                                            image
+                                                        )}"
+                                                        alt="我的照片"
+                                                    >
+
+                                                `
+                                            )
+                                            .join("")
+                                        }
+
+                                    </div>
+
+
+                                    ${
+                                        photo.caption
+                                        ?
+                                        `
+                                        <div
+                                            class="photo-caption"
+                                        >
+                                            ${escapeHTML(
+                                                photo.caption
+                                            )}
+                                        </div>
+                                        `
+                                        :
+                                        ""
+                                    }
+
+
+                                    <button
+                                        class="delete-btn"
+                                        onclick='deletePhotoGroup(
+                                            ${photo.id},
+                                            ${JSON.stringify(
+                                                images
+                                            ).replace(
+                                                /'/g,
+                                                "&#039;"
+                                            )}
+                                        )'
+                                    >
+                                        删除这一组
+                                    </button>
+
+                                </div>
+
+                            `;
+
+                        }
+                    )
+                    .join("");
 
         }
 
+        catch (error) {
 
-        /*
-         * 生成照片时间线
-         */
+            console.error(
+                error
+            );
 
-        container.innerHTML =
-            photos
-                .map(
-                    photo => `
-
-                    <div class="photo-entry">
-
-                        <div class="photo-time">
-                            ${photo.time}
-                        </div>
-
-
-                        <div class="photo-grid">
-
-                            ${photo.images
-                                .map(
-                                    image => `
-
-                                    <img
-                                        src="${image}"
-                                        alt="我的照片"
-                                    >
-
-                                `
-                                )
-                                .join("")
-                            }
-
-                        </div>
-
-
-                        ${
-                            photo.caption
-                            ?
-                            `
-                            <div class="photo-caption">
-                                ${escapeHTML(
-                                    photo.caption
-                                )}
-                            </div>
-                            `
-                            :
-                            ""
-                        }
-
-
-                        <button
-                            class="delete-btn"
-                            onclick="deletePhotoGroup(
-                                ${photo.id}
-                            )"
-                        >
-                            删除这一组
-                        </button>
-
-                    </div>
-
+            container.innerHTML =
                 `
-                )
-                .join("");
+                <div class="empty">
+                    照片加载失败。
+                    <br><br>
+                    ${escapeHTML(
+                        error.message
+                    )}
+                </div>
+                `;
+
+        }
 
     }
 
 
+    /* =========================================================
+       时间格式
+       ========================================================= */
 
-    /*
-     * ============================
-     * 防止文字破坏 HTML
-     * ============================
-     */
+    function formatTime(
+        timestamp
+    ) {
+
+        if (!timestamp) {
+            return "";
+        }
+
+
+        const date =
+            new Date(timestamp);
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return timestamp;
+
+        }
+
+
+        return date.toLocaleString(
+            "zh-CN",
+            {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       防止文字破坏 HTML
+       ========================================================= */
 
     function escapeHTML(text) {
 
-        return text
+        return String(text)
             .replace(
                 /&/g,
                 "&amp;"
@@ -1182,28 +1564,7 @@
                 "&gt;"
             )
             .replace(
-                /"/g,
-                "&quot;"
-            )
-            .replace(
-                /'/g,
-                "&#039;"
-            );
-
-    }
-
-
-
-    /*
-     * ============================
-     * 页面打开时显示照片
-     * ============================
-     */
-
-    renderPhotos();
-
-
-</script>
+                /
 
 </body>
 </html>
