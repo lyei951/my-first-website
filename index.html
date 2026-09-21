@@ -3,12 +3,836 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的网站</title>
+
+    <title>LYEI — Personal Website</title>
+
+    <meta name="description" content="LYEI 的个人网站">
+    <meta name="author" content="LYEI">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f4f3ef;
+            color: #111;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "PingFang SC",
+                "Microsoft YaHei",
+                sans-serif;
+            line-height: 1.6;
+        }
+
+        ::selection {
+            background: #111;
+            color: #fff;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* =========================
+           顶部导航
+        ========================= */
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 22px 5vw;
+
+            background: rgba(244, 243, 239, 0.82);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            font-size: 13px;
+        }
+
+        .nav-links a {
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+
+            width: 0;
+            height: 1px;
+
+            background: #111;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* =========================
+           Hero
+        ========================= */
+
+        .hero {
+            min-height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            padding: 140px 8vw 100px;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+
+            position: absolute;
+            width: 420px;
+            height: 420px;
+
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+
+            right: -160px;
+            top: 120px;
+        }
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+            width: 220px;
+            height: 220px;
+
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+
+            right: -60px;
+            top: 220px;
+        }
+
+        .eyebrow {
+            font-size: 12px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            opacity: 0.55;
+        }
+
+        .hero h1 {
+            font-size: clamp(70px, 14vw, 190px);
+            line-height: 0.82;
+            letter-spacing: -0.085em;
+            font-weight: 900;
+            max-width: 1000px;
+        }
+
+        .hero h1 span {
+            display: block;
+            font-weight: 300;
+        }
+
+        .hero-description {
+            max-width: 550px;
+            margin-top: 55px;
+
+            font-size: 17px;
+            line-height: 1.9;
+
+            color: #444;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 35px;
+            left: 8vw;
+
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            opacity: 0.45;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .scroll-line {
+            width: 45px;
+            height: 1px;
+            background: #111;
+        }
+
+        /* =========================
+           通用 Section
+        ========================= */
+
+        section {
+            padding: 130px 8vw;
+            border-top: 1px solid rgba(0, 0, 0, 0.12);
+        }
+
+        .section-label {
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            opacity: 0.45;
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: clamp(42px, 7vw, 92px);
+            line-height: 0.95;
+            letter-spacing: -0.06em;
+            font-weight: 700;
+            margin-bottom: 70px;
+        }
+
+        /* =========================
+           About
+        ========================= */
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .about-main {
+            font-size: clamp(22px, 3vw, 38px);
+            line-height: 1.45;
+            letter-spacing: -0.035em;
+        }
+
+        .about-main strong {
+            font-weight: 700;
+        }
+
+        .about-side {
+            color: #555;
+            font-size: 15px;
+            line-height: 2;
+        }
+
+        .about-side p + p {
+            margin-top: 25px;
+        }
+
+        /* =========================
+           Projects
+        ========================= */
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+
+            background: #111;
+            border: 1px solid #111;
+        }
+
+        .project {
+            background: #f4f3ef;
+            min-height: 330px;
+
+            padding: 35px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            transition:
+                background 0.3s ease,
+                color 0.3s ease;
+        }
+
+        .project:hover {
+            background: #111;
+            color: #fff;
+        }
+
+        .project-number {
+            font-size: 12px;
+            opacity: 0.45;
+        }
+
+        .project h3 {
+            font-size: 34px;
+            letter-spacing: -0.05em;
+            margin-bottom: 15px;
+        }
+
+        .project p {
+            font-size: 14px;
+            line-height: 1.8;
+            opacity: 0.65;
+            max-width: 400px;
+        }
+
+        .project-arrow {
+            align-self: flex-end;
+            font-size: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .project:hover .project-arrow {
+            transform: translate(8px, -8px);
+        }
+
+        /* =========================
+           Quote
+        ========================= */
+
+        .quote-section {
+            min-height: 70vh;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .quote {
+            max-width: 1000px;
+
+            font-size: clamp(35px, 6vw, 80px);
+            line-height: 1.08;
+            letter-spacing: -0.065em;
+        }
+
+        .quote-mark {
+            font-size: 80px;
+            line-height: 0.5;
+            opacity: 0.2;
+        }
+
+        #randomQuote {
+            transition: opacity 0.2s ease;
+        }
+
+        .quote-button {
+            margin-top: 45px;
+
+            width: fit-content;
+
+            border: 1px solid #111;
+            background: transparent;
+
+            padding: 13px 20px;
+
+            font-size: 12px;
+            cursor: pointer;
+
+            transition:
+                background 0.25s ease,
+                color 0.25s ease;
+        }
+
+        .quote-button:hover {
+            background: #111;
+            color: #fff;
+        }
+
+        /* =========================
+           Contact
+        ========================= */
+
+        .contact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .contact-big {
+            font-size: clamp(35px, 6vw, 80px);
+            line-height: 1;
+            letter-spacing: -0.065em;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .contact-links a {
+            font-size: 18px;
+
+            border-bottom: 1px solid #111;
+
+            padding-bottom: 5px;
+
+            transition: opacity 0.2s ease;
+        }
+
+        .contact-links a:hover {
+            opacity: 0.45;
+        }
+
+        /* =========================
+           Footer
+        ========================= */
+
+        footer {
+            border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+            padding: 25px 8vw;
+
+            display: flex;
+            justify-content: space-between;
+
+            font-size: 11px;
+            opacity: 0.5;
+        }
+
+        /* =========================
+           Responsive
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            nav {
+                padding: 18px 5vw;
+            }
+
+            .nav-links {
+                gap: 14px;
+                font-size: 11px;
+            }
+
+            .hero {
+                padding: 130px 6vw 100px;
+            }
+
+            .hero h1 {
+                font-size: 22vw;
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            section {
+                padding: 90px 6vw;
+            }
+
+            .about-grid,
+            .contact {
+                grid-template-columns: 1fr;
+                gap: 45px;
+            }
+
+            .projects {
+                grid-template-columns: 1fr;
+            }
+
+            .project {
+                min-height: 280px;
+            }
+
+            .section-title {
+                margin-bottom: 45px;
+            }
+
+            footer {
+                padding: 20px 6vw;
+            }
+        }
+
+        /* =========================
+           Fade Animation
+        ========================= */
+
+        .fade {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.9s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.15s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.45s;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
+
+
 <body>
 
-    <h1>你好，世界！</h1>
-    <p>这是我的第一个网站。</p>
+    <!-- =========================
+         Navigation
+    ========================== -->
+
+    <nav>
+        <a href="#" class="logo">LYEI.</a>
+
+        <div class="nav-links">
+            <a href="#about">ABOUT</a>
+            <a href="#projects">PROJECTS</a>
+            <a href="#contact">CONTACT</a>
+        </div>
+    </nav>
+
+
+    <!-- =========================
+         Hero
+    ========================== -->
+
+    <header class="hero">
+
+        <div class="eyebrow fade">
+            PERSONAL WEBSITE / 2026
+        </div>
+
+        <h1 class="fade delay-1">
+            LYEI
+            <span>PERSONAL</span>
+        </h1>
+
+        <p class="hero-description fade delay-2">
+            一个普通人的互联网角落。<br>
+            写一点东西，做一点东西，偶尔记录一些正在发生的事情。
+        </p>
+
+        <div class="scroll-hint fade delay-3">
+            <span class="scroll-line"></span>
+            SCROLL TO EXPLORE
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         About
+    ========================== -->
+
+    <section id="about">
+
+        <div class="section-label">
+            01 / ABOUT
+        </div>
+
+        <h2 class="section-title">
+            关于我
+        </h2>
+
+        <div class="about-grid">
+
+            <div class="about-main">
+                我喜欢观察一些<br>
+                <strong>看起来很普通的东西。</strong>
+                <br><br>
+                然后想一想，<br>
+                它为什么会变成现在这样。
+            </div>
+
+            <div class="about-side">
+
+                <p>
+                    这里没有特别正式的个人介绍。
+                    比起给自己贴标签，我更喜欢把这个网站当成一个私人空间。
+                </p>
+
+                <p>
+                    可以放一些文字、照片、项目，
+                    也可以记录一些突然冒出来的想法。
+                </p>
+
+                <p>
+                    如果你偶然来到这里，
+                    欢迎随便看看。
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Projects
+    ========================== -->
+
+    <section id="projects">
+
+        <div class="section-label">
+            02 / PROJECTS
+        </div>
+
+        <h2 class="section-title">
+            做过一些<br>
+            什么？
+        </h2>
+
+        <div class="projects">
+
+            <a href="#" class="project">
+
+                <div class="project-number">
+                    PROJECT / 001
+                </div>
+
+                <div>
+                    <h3>杂谈</h3>
+
+                    <p>
+                        关于互联网、AI、社交媒体，
+                        以及一些平时很少认真想过的问题。
+                    </p>
+                </div>
+
+                <div class="project-arrow">
+                    ↗
+                </div>
+
+            </a>
+
+
+            <a href="#" class="project">
+
+                <div class="project-number">
+                    PROJECT / 002
+                </div>
+
+                <div>
+                    <h3>实验室</h3>
+
+                    <p>
+                        一些正在折腾的小东西。
+                        有些最后会完成，有些可能永远停留在半成品。
+                    </p>
+                </div>
+
+                <div class="project-arrow">
+                    ↗
+                </div>
+
+            </a>
+
+
+            <a href="#" class="project">
+
+                <div class="project-number">
+                    PROJECT / 003
+                </div>
+
+                <div>
+                    <h3>照片</h3>
+
+                    <p>
+                        随手拍下的一些画面。
+                        没有什么特别的主题，只是觉得值得留下。
+                    </p>
+                </div>
+
+                <div class="project-arrow">
+                    ↗
+                </div>
+
+            </a>
+
+
+            <a href="#" class="project">
+
+                <div class="project-number">
+                    PROJECT / 004
+                </div>
+
+                <div>
+                    <h3>更多</h3>
+
+                    <p>
+                        这个区域暂时留空。
+                        以后想到什么再放进来。
+                    </p>
+                </div>
+
+                <div class="project-arrow">
+                    ↗
+                </div>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Random Quote
+    ========================== -->
+
+    <section class="quote-section">
+
+        <div class="section-label">
+            03 / RANDOM THOUGHT
+        </div>
+
+        <div class="quote">
+
+            <div class="quote-mark">
+                “
+            </div>
+
+            <span id="randomQuote">
+                有时候，记录本身就是一件值得做的事情。
+            </span>
+
+        </div>
+
+        <button class="quote-button" onclick="randomQuote()">
+            换一句 →
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         Contact
+    ========================== -->
+
+    <section id="contact">
+
+        <div class="section-label">
+            04 / CONTACT
+        </div>
+
+        <div class="contact">
+
+            <div class="contact-big">
+                如果你想<br>
+                找到我。
+            </div>
+
+            <div class="contact-links">
+
+                <a href="mailto:your@email.com">
+                    Email ↗
+                </a>
+
+                <a href="https://github.com/lyei951"
+                   target="_blank">
+                    GitHub ↗
+                </a>
+
+                <a href="#">
+                    Instagram ↗
+                </a>
+
+                <a href="#">
+                    WeChat ↗
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Footer
+    ========================== -->
+
+    <footer>
+
+        <span>
+            © 2026 LYEI
+        </span>
+
+        <span>
+            MADE ON THE INTERNET
+        </span>
+
+    </footer>
+
+
+    <!-- =========================
+         JavaScript
+    ========================== -->
+
+    <script>
+
+        const quotes = [
+            "有时候，记录本身就是一件值得做的事情。",
+            "互联网很大，所以我想在这里留一个小角落。",
+            "不是所有事情都需要一个明确的答案。",
+            "人总是在一边生活，一边理解自己。",
+            "偶尔停下来看看，也许会发现一些以前没注意到的东西。",
+            "我们每天都在制造一些以后会怀念的瞬间。",
+            "没有什么特别的目的，只是想留下些什么。",
+            "有些想法如果不记录下来，很快就会消失。",
+            "世界已经足够吵了，所以这里尽量安静一点。"
+        ];
+
+        function randomQuote() {
+
+            const element = document.getElementById("randomQuote");
+
+            element.style.opacity = "0";
+
+            setTimeout(() => {
+
+                const randomIndex =
+                    Math.floor(Math.random() * quotes.length);
+
+                element.textContent =
+                    quotes[randomIndex];
+
+                element.style.opacity = "1";
+
+            }, 200);
+        }
+
+    </script>
 
 </body>
 </html>
