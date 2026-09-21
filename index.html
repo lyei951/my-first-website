@@ -6,13 +6,11 @@
 
     <title>LYEI — A place to keep things.</title>
 
-    <meta name="description" content="LYEI 的个人记录空间。生活、想法、照片，以及一些值得留下的东西。">
+    <meta name="description" content="A small place for things worth keeping.">
 
     <style>
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         html {
@@ -20,17 +18,16 @@
         }
 
         body {
+            margin: 0;
             background: #f7f7f5;
-            color: #111;
+            color: #171717;
             font-family:
                 -apple-system,
                 BlinkMacSystemFont,
                 "Segoe UI",
                 "PingFang SC",
-                "Hiragino Sans GB",
                 "Microsoft YaHei",
                 sans-serif;
-            line-height: 1.7;
         }
 
         a {
@@ -38,323 +35,152 @@
             text-decoration: none;
         }
 
-        /* 页面整体 */
-
         .page {
-            width: min(1180px, calc(100% - 48px));
+            width: min(1100px, calc(100% - 48px));
             margin: 0 auto;
+            padding: 70px 0 100px;
         }
 
         /* 顶部 */
 
         header {
-            height: 90px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #d8d8d4;
+            align-items: flex-start;
+            margin-bottom: 140px;
         }
 
         .logo {
             font-size: 22px;
             font-weight: 700;
-            letter-spacing: 0.08em;
+            letter-spacing: -0.04em;
         }
 
-        nav {
-            display: flex;
-            gap: 28px;
+        .header-note {
             font-size: 13px;
-            color: #555;
+            color: #777;
+            text-align: right;
+            line-height: 1.6;
         }
 
-        nav a {
-            transition: color 0.2s ease;
-        }
-
-        nav a:hover {
-            color: #000;
-        }
-
-        /* Hero */
+        /* 主标题 */
 
         .hero {
-            padding: 120px 0 130px;
-            border-bottom: 1px solid #d8d8d4;
+            margin-bottom: 120px;
         }
 
-        .hero-label {
-            font-size: 12px;
-            letter-spacing: 0.16em;
-            color: #777;
-            margin-bottom: 28px;
+        .hero-small {
+            margin-bottom: 18px;
+            font-size: 13px;
+            color: #888;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
         }
 
         .hero h1 {
+            margin: 0;
             max-width: 850px;
-            font-size: clamp(48px, 8vw, 104px);
+            font-size: clamp(48px, 8vw, 92px);
             line-height: 0.98;
-            letter-spacing: -0.055em;
+            letter-spacing: -0.065em;
             font-weight: 700;
-            margin-bottom: 42px;
         }
 
-        .hero-description {
-            max-width: 560px;
-            font-size: 17px;
-            line-height: 1.9;
-            color: #555;
+        /* 两个入口 */
+
+        .sections {
+            border-top: 1px solid #d8d8d5;
         }
 
-        /* 通用 section */
-
-        section {
-            border-bottom: 1px solid #d8d8d4;
-            padding: 90px 0;
-        }
-
-        .section-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 50px;
-        }
-
-        .section-title {
-            font-size: 13px;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .section-number {
-            font-size: 12px;
-            color: #888;
-        }
-
-        /* 最近记录 */
-
-        .entries {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .entry {
+        .section-link {
             display: grid;
-            grid-template-columns: 150px 1fr 30px;
-            gap: 30px;
+            grid-template-columns: 90px 1fr 40px;
             align-items: center;
-            padding: 25px 0;
-            border-top: 1px solid #dededb;
-            transition: padding 0.25s ease;
+            min-height: 180px;
+            border-bottom: 1px solid #d8d8d5;
+            transition:
+                padding 0.25s ease,
+                background 0.25s ease;
         }
 
-        .entry:last-child {
-            border-bottom: 1px solid #dededb;
+        .section-link:hover {
+            padding-left: 18px;
+            background: #eeeeeb;
         }
 
-        .entry:hover {
-            padding-left: 12px;
-            padding-right: 12px;
-        }
-
-        .entry-date {
-            font-family: "Courier New", monospace;
-            font-size: 12px;
-            color: #777;
-        }
-
-        .entry-content h3 {
-            font-size: 20px;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            margin-bottom: 5px;
-        }
-
-        .entry-content p {
+        .number {
             font-size: 13px;
             color: #888;
+            letter-spacing: 0.08em;
         }
 
-        .entry-arrow {
-            font-size: 18px;
-            color: #888;
-            transition: transform 0.2s ease;
+        .section-info h2 {
+            margin: 0 0 8px;
+            font-size: clamp(30px, 4vw, 48px);
+            line-height: 1;
+            letter-spacing: -0.05em;
         }
 
-        .entry:hover .entry-arrow {
-            transform: translateX(5px);
-            color: #111;
+        .section-info p {
+            margin: 0;
+            color: #777;
+            font-size: 14px;
         }
 
-        /* 时间档案 */
-
-        .archive-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            border-top: 1px solid #dededb;
-            border-left: 1px solid #dededb;
+        .arrow {
+            font-size: 25px;
+            color: #777;
+            transition: transform 0.25s ease;
         }
 
-        .archive-item {
-            min-height: 150px;
-            padding: 25px;
-            border-right: 1px solid #dededb;
-            border-bottom: 1px solid #dededb;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: background 0.2s ease;
+        .section-link:hover .arrow {
+            transform: translateX(7px);
         }
 
-        .archive-item:hover {
-            background: #111;
-            color: #fff;
-        }
-
-        .archive-year {
-            font-size: 30px;
-            letter-spacing: -0.04em;
-        }
-
-        .archive-count {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .archive-item:hover .archive-count {
-            color: #aaa;
-        }
-
-        /* About */
-
-        .about {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-        }
-
-        .about-big {
-            font-size: clamp(30px, 4vw, 50px);
-            line-height: 1.2;
-            letter-spacing: -0.04em;
-        }
-
-        .about-text {
-            max-width: 450px;
-            color: #666;
-            font-size: 15px;
-            line-height: 2;
-        }
-
-        .about-text p + p {
-            margin-top: 22px;
-        }
-
-        /* Footer */
+        /* 底部 */
 
         footer {
-            min-height: 180px;
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
-            padding: 45px 0;
+            margin-top: 120px;
+            padding-top: 20px;
+            border-top: 1px solid #d8d8d5;
+            color: #888;
             font-size: 12px;
-            color: #777;
         }
 
-        .footer-left {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+        /* 手机 */
 
-        .footer-right {
-            text-align: right;
-        }
-
-        /* 手机端 */
-
-        @media (max-width: 700px) {
+        @media (max-width: 600px) {
 
             .page {
-                width: min(100% - 30px, 1180px);
+                width: min(100% - 32px, 1100px);
+                padding-top: 35px;
             }
 
             header {
-                height: 70px;
-            }
-
-            nav {
-                gap: 14px;
-                font-size: 11px;
-            }
-
-            nav a:nth-child(2) {
-                display: none;
+                margin-bottom: 100px;
             }
 
             .hero {
-                padding: 80px 0 90px;
+                margin-bottom: 80px;
             }
 
-            .hero h1 {
-                font-size: 54px;
+            .header-note {
+                display: none;
             }
 
-            .hero-description {
-                font-size: 15px;
+            .section-link {
+                grid-template-columns: 55px 1fr 25px;
+                min-height: 145px;
             }
 
-            section {
-                padding: 65px 0;
-            }
-
-            .entry {
-                grid-template-columns: 1fr 20px;
-                gap: 8px;
-            }
-
-            .entry-date {
-                grid-column: 1 / -1;
-                margin-bottom: 2px;
-            }
-
-            .entry-content h3 {
-                font-size: 17px;
-            }
-
-            .entry-content p {
-                font-size: 12px;
-            }
-
-            .archive-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .archive-item {
-                min-height: 120px;
-            }
-
-            .about {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .about-big {
-                font-size: 34px;
+            .section-info p {
+                font-size: 13px;
             }
 
             footer {
-                min-height: 150px;
-                align-items: flex-start;
-                flex-direction: column;
-                gap: 30px;
-            }
-
-            .footer-right {
-                text-align: left;
+                margin-top: 80px;
             }
         }
     </style>
@@ -364,288 +190,103 @@
 
 <div class="page">
 
-    <!-- 顶部导航 -->
     <header>
+        <div class="logo">
+            LYEI
+        </div>
 
-        <a href="#" class="logo">LYEI</a>
-
-        <nav>
-            <a href="#recent">RECORDS</a>
-            <a href="#archive">ARCHIVE</a>
-            <a href="#about">ABOUT</a>
-        </nav>
-
+        <div class="header-note">
+            personal archive<br>
+            2026 —
+        </div>
     </header>
 
 
-    <!-- 首页主视觉 -->
     <main>
 
         <section class="hero">
 
-            <div class="hero-label">
-                Personal Archive / 2026 —
+            <div class="hero-small">
+                A personal space
             </div>
 
             <h1>
-                A place<br>
-                to keep things.
+                A place to<br>
+                keep things.
             </h1>
 
-            <div class="hero-description">
-                这里什么都可以放。<br>
-                生活、想法、照片，以及一些当时觉得值得记住的东西。
-            </div>
-
         </section>
 
 
-        <!-- 最近记录 -->
-        <section id="recent">
+        <section class="sections">
 
-            <div class="section-head">
+            <!-- 001 -->
 
-                <div class="section-title">
-                    Recent Records
+            <a href="pages/scratchpad.html" class="section-link">
+
+                <div class="number">
+                    001
                 </div>
 
-                <div class="section-number">
-                    01
-                </div>
-
-            </div>
-
-
-            <div class="entries">
-
-                <!-- 第一条 -->
-                <a href="article-001.html" class="entry">
-
-                    <div class="entry-date">
-                        2026.09.21
-                    </div>
-
-                    <div class="entry-content">
-
-                        <h3>
-                            开始做这个网站
-                        </h3>
-
-                        <p>
-                            突然觉得，应该给自己留一个可以随便记录东西的地方。
-                        </p>
-
-                    </div>
-
-                    <div class="entry-arrow">
-                        →
-                    </div>
-
-                </a>
-
-
-                <!-- 第二条 -->
-                <a href="#" class="entry">
-
-                    <div class="entry-date">
-                        2026.09.17
-                    </div>
-
-                    <div class="entry-content">
-
-                        <h3>
-                            为什么现在的人越来越依赖 AI
-                        </h3>
-
-                        <p>
-                            一些关于人与 AI、陪伴和依赖的想法。
-                        </p>
-
-                    </div>
-
-                    <div class="entry-arrow">
-                        →
-                    </div>
-
-                </a>
-
-
-                <!-- 第三条 -->
-                <a href="#" class="entry">
-
-                    <div class="entry-date">
-                        2026.09.12
-                    </div>
-
-                    <div class="entry-content">
-
-                        <h3>
-                            最近没想明白的一些事情
-                        </h3>
-
-                        <p>
-                            没有结论，只是想把它们先留下来。
-                        </p>
-
-                    </div>
-
-                    <div class="entry-arrow">
-                        →
-                    </div>
-
-                </a>
-
-
-            </div>
-
-        </section>
-
-
-        <!-- Archive -->
-        <section id="archive">
-
-            <div class="section-head">
-
-                <div class="section-title">
-                    Archive
-                </div>
-
-                <div class="section-number">
-                    02
-                </div>
-
-            </div>
-
-
-            <div class="archive-grid">
-
-                <a href="#" class="archive-item">
-
-                    <div class="archive-year">
-                        2026
-                    </div>
-
-                    <div class="archive-count">
-                        3 records
-                    </div>
-
-                </a>
-
-
-                <a href="#" class="archive-item">
-
-                    <div class="archive-year">
-                        2025
-                    </div>
-
-                    <div class="archive-count">
-                        —
-                    </div>
-
-                </a>
-
-
-                <a href="#" class="archive-item">
-
-                    <div class="archive-year">
-                        2024
-                    </div>
-
-                    <div class="archive-count">
-                        —
-                    </div>
-
-                </a>
-
-
-                <a href="#" class="archive-item">
-
-                    <div class="archive-year">
-                        Earlier
-                    </div>
-
-                    <div class="archive-count">
-                        —
-                    </div>
-
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- 关于 -->
-        <section id="about">
-
-            <div class="section-head">
-
-                <div class="section-title">
-                    About
-                </div>
-
-                <div class="section-number">
-                    03
-                </div>
-
-            </div>
-
-
-            <div class="about">
-
-                <div class="about-big">
-
-                    This is not<br>
-                    a portfolio.
-
-                </div>
-
-
-                <div class="about-text">
+                <div class="section-info">
+
+                    <h2>
+                        SCRATCHPAD
+                    </h2>
 
                     <p>
-                        这是我的一个小角落。
-                    </p>
-
-                    <p>
-                        我可以在这里记录生活、写一些突然想到的东西，
-                        放几张照片，或者只是留下某一天发生过的事情。
-                    </p>
-
-                    <p>
-                        不需要定期更新，也不需要每一篇都有意义。
-                        只是想让一些东西留下来。
+                        随手写下想到的东西。
                     </p>
 
                 </div>
 
-            </div>
+                <div class="arrow">
+                    →
+                </div>
+
+            </a>
+
+
+            <!-- 002 -->
+
+            <a href="pages/photos.html" class="section-link">
+
+                <div class="number">
+                    002
+                </div>
+
+                <div class="section-info">
+
+                    <h2>
+                        PHOTOS
+                    </h2>
+
+                    <p>
+                        留下一些值得记住的画面。
+                    </p>
+
+                </div>
+
+                <div class="arrow">
+                    →
+                </div>
+
+            </a>
 
         </section>
 
     </main>
 
 
-    <!-- 底部 -->
     <footer>
 
-        <div class="footer-left">
+        <span>
+            LYEI
+        </span>
 
-            <strong>LYEI</strong>
-
-            <span>
-                A personal archive on the internet.
-            </span>
-
-        </div>
-
-
-        <div class="footer-right">
-
-            © 2026 LYEI<br>
-            Made for keeping things.
-
-        </div>
+        <span>
+            A place to keep things.
+        </span>
 
     </footer>
 
