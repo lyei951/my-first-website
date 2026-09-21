@@ -30,6 +30,10 @@
             padding: 70px 0 100px;
         }
 
+        /* =========================
+           顶部
+        ========================= */
+
         .top {
             display: flex;
             justify-content: space-between;
@@ -60,7 +64,9 @@
             text-decoration: underline;
         }
 
-        /* 上传区域 */
+        /* =========================
+           上传区域
+        ========================= */
 
         .upload-box {
             background: #fff;
@@ -75,16 +81,49 @@
             margin-bottom: 20px;
         }
 
-        .file-input {
-            width: 100%;
-            padding: 18px;
-            border: 1px dashed #ccc;
-            border-radius: 10px;
-            background: #fafafa;
-            cursor: pointer;
+        /* 隐藏真正的文件选择器 */
+
+        #fileInput {
+            display: none;
         }
 
-        /* 多张图片预览 */
+        /* 添加照片按钮 */
+
+        .add-photo-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 100%;
+            min-height: 100px;
+
+            border: 1px dashed #ccc;
+            border-radius: 10px;
+
+            background: #fafafa;
+
+            color: #666;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            transition: background 0.2s ease;
+        }
+
+        .add-photo-btn:hover {
+            background: #f0f0ee;
+        }
+
+        .add-photo-symbol {
+            font-size: 24px;
+            margin-right: 8px;
+            color: #888;
+        }
+
+        /* =========================
+           预览区域
+        ========================= */
 
         .preview {
             display: none;
@@ -112,25 +151,100 @@
             display: block;
         }
 
+        /* 删除单张待上传照片 */
+
+        .remove-preview {
+            position: absolute;
+
+            top: 7px;
+            right: 7px;
+
+            width: 26px;
+            height: 26px;
+
+            border: none;
+            border-radius: 50%;
+
+            background: rgba(0, 0, 0, 0.65);
+
+            color: #fff;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            line-height: 26px;
+
+            padding: 0;
+        }
+
+        .remove-preview:hover {
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        /* 照片数量 */
+
         .photo-count {
             margin-top: 15px;
             color: #888;
             font-size: 13px;
         }
 
+        /* 再添加按钮 */
+
+        .add-more-btn {
+            margin-top: 15px;
+
+            border: 1px solid #ddd;
+
+            background: #fff;
+
+            color: #555;
+
+            padding: 9px 15px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+        }
+
+        .add-more-btn:hover {
+            background: #f2f2f0;
+        }
+
+        /* 文字 */
+
         .caption-input {
             width: 100%;
+
             min-height: 90px;
+
             margin-top: 20px;
+
             padding: 15px;
+
             border: 1px solid #ddd;
+
             border-radius: 8px;
+
             resize: vertical;
+
             outline: none;
+
             font-family: inherit;
+
             font-size: 15px;
+
             line-height: 1.7;
         }
+
+        .caption-input:focus {
+            border-color: #aaa;
+        }
+
+        /* 保存 */
 
         .save-row {
             display: flex;
@@ -140,11 +254,17 @@
 
         .save-btn {
             border: none;
+
             background: #222;
+
             color: #fff;
+
             padding: 10px 20px;
+
             border-radius: 8px;
+
             cursor: pointer;
+
             font-size: 14px;
         }
 
@@ -152,7 +272,9 @@
             opacity: 0.8;
         }
 
-        /* 时间线 */
+        /* =========================
+           已保存照片
+        ========================= */
 
         .section-title {
             font-size: 18px;
@@ -172,34 +294,51 @@
 
         .photo-grid {
             display: grid;
+
             grid-template-columns: repeat(2, 1fr);
+
             gap: 12px;
         }
 
         .photo-grid img {
             width: 100%;
+
             aspect-ratio: 1 / 1;
+
             object-fit: cover;
+
             display: block;
+
             border-radius: 8px;
+
             background: #eee;
         }
 
         .photo-caption {
             margin-top: 16px;
+
             white-space: pre-wrap;
+
             font-size: 15px;
+
             line-height: 1.8;
+
             max-width: 700px;
         }
 
         .delete-btn {
             margin-top: 12px;
+
             padding: 0;
+
             border: none;
+
             background: none;
+
             color: #aaa;
+
             cursor: pointer;
+
             font-size: 12px;
         }
 
@@ -211,6 +350,10 @@
             color: #aaa;
             font-size: 14px;
         }
+
+        /* =========================
+           手机
+        ========================= */
 
         @media (max-width: 600px) {
 
@@ -238,58 +381,122 @@
                 grid-template-columns: repeat(2, 1fr);
                 gap: 8px;
             }
+
         }
+
     </style>
 </head>
+
 
 <body>
 
 <div class="container">
 
+
+    <!-- =========================
+         顶部
+    ========================= -->
+
     <div class="top">
 
         <div>
-            <h1 class="title">PHOTOS</h1>
+
+            <h1 class="title">
+                PHOTOS
+            </h1>
 
             <div class="subtitle">
                 一些想留下来的画面。
             </div>
+
         </div>
 
-        <a class="back" href="../index.html">
+
+        <a
+            class="back"
+            href="../index.html"
+        >
             ← 返回首页
         </a>
 
     </div>
 
 
-    <!-- 上传 -->
+
+    <!-- =========================
+         上传区域
+    ========================= -->
 
     <div class="upload-box">
+
 
         <div class="upload-title">
             留下一些照片
         </div>
 
+
+        <!-- 真正的文件选择器 -->
+
         <input
             id="fileInput"
-            class="file-input"
             type="file"
             accept="image/*"
             multiple
         >
 
-        <div id="preview" class="preview">
+
+        <!-- 第一次 / 后续添加照片 -->
+
+        <label
+            for="fileInput"
+            class="add-photo-btn"
+        >
+
+            <span class="add-photo-symbol">
+                ＋
+            </span>
+
+            添加照片
+
+        </label>
+
+
+
+        <!-- 预览区域 -->
+
+        <div
+            id="preview"
+            class="preview"
+        >
+
+
+            <!-- 照片预览 -->
 
             <div
                 id="previewGrid"
                 class="preview-grid"
             ></div>
 
+
+            <!-- 数量 -->
+
             <div
                 id="photoCount"
                 class="photo-count"
             ></div>
+
+
+            <!-- 再添加 -->
+
+            <label
+                for="fileInput"
+                class="add-more-btn"
+            >
+                ＋ 再添加照片
+            </label>
+
+
+            <!-- 文字 -->
 
             <textarea
                 id="captionInput"
@@ -297,11 +504,14 @@
                 placeholder="写点什么……（可以不写）"
             ></textarea>
 
+
+            <!-- 保存 -->
+
             <div class="save-row">
 
                 <button
                     class="save-btn"
-                    onclick="savePhotos()"
+                    onclick="savePhotoGroup()"
                 >
                     保存这些照片
                 </button>
@@ -313,23 +523,55 @@
     </div>
 
 
-    <!-- 照片时间线 -->
+
+    <!-- =========================
+         我的照片
+    ========================= -->
 
     <div class="section-title">
         我的照片
     </div>
 
+
     <div id="photos"></div>
+
 
 </div>
 
 
+
 <script>
+
+
+    /*
+     * ============================
+     * 数据
+     * ============================
+     */
 
     const STORAGE_KEY = "lyei_photos";
 
+
+    /*
+     * 当前正在准备上传的照片
+     *
+     * 这里非常重要：
+     *
+     * 每次添加照片时，
+     * 都会 push 到这个数组。
+     *
+     * 不会清空之前的照片。
+     */
+
     let selectedImages = [];
 
+
+
+    /*
+     * ============================
+     * 获取已经保存的照片
+     * ============================
+     */
 
     function getPhotos() {
 
@@ -339,6 +581,13 @@
 
     }
 
+
+
+    /*
+     * ============================
+     * 保存到浏览器
+     * ============================
+     */
 
     function savePhotosToStorage(photos) {
 
@@ -350,179 +599,489 @@
     }
 
 
+
     /*
-     * 选择一张或多张照片
+     * ============================
+     * 选择照片
+     * ============================
+     *
+     * 可以反复选择。
+     *
+     * 第一次：
+     *
+     * A
+     *
+     * 第二次：
+     *
+     * A + B
+     *
+     * 第三次：
+     *
+     * A + B + C
+     *
+     * 不会覆盖。
      */
 
     document
         .getElementById("fileInput")
-        .addEventListener("change", function(event) {
-
-            const files = Array.from(event.target.files);
-
-            if (!files.length) {
-                return;
-            }
-
-            selectedImages = [];
-
-            const previewGrid =
-                document.getElementById("previewGrid");
-
-            previewGrid.innerHTML = "";
-
-            let loaded = 0;
+        .addEventListener(
+            "change",
+            function(event) {
 
 
-            files.forEach(file => {
-
-                const reader = new FileReader();
-
-                reader.onload = function(e) {
-
-                    selectedImages.push(e.target.result);
-
-                    const item =
-                        document.createElement("div");
-
-                    item.className = "preview-item";
-
-                    const img =
-                        document.createElement("img");
-
-                    img.src = e.target.result;
-
-                    item.appendChild(img);
-
-                    previewGrid.appendChild(item);
+                const files =
+                    Array.from(
+                        event.target.files
+                    );
 
 
-                    loaded++;
+                if (!files.length) {
+                    return;
+                }
 
-                    if (loaded === files.length) {
 
-                        document
-                            .getElementById("preview")
-                            .style.display = "block";
+                let loaded = 0;
 
-                        document
-                            .getElementById("photoCount")
-                            .textContent =
-                            `已选择 ${files.length} 张照片`;
+
+                files.forEach(
+                    file => {
+
+
+                        const reader =
+                            new FileReader();
+
+
+                        reader.onload =
+                            function(e) {
+
+
+                                /*
+                                 * 关键：
+                                 *
+                                 * push
+                                 *
+                                 * 而不是重新赋值。
+                                 */
+
+                                selectedImages.push(
+                                    e.target.result
+                                );
+
+
+                                loaded++;
+
+
+                                /*
+                                 * 所有新选择的照片
+                                 * 都读取完成后刷新预览。
+                                 */
+
+                                if (
+                                    loaded ===
+                                    files.length
+                                ) {
+
+                                    renderPreview();
+
+                                }
+
+                            };
+
+
+                        reader.readAsDataURL(file);
 
                     }
+                );
 
-                };
 
-                reader.readAsDataURL(file);
+                /*
+                 * 清空 input 的值。
+                 *
+                 * 这样用户可以：
+                 *
+                 * 选择 A
+                 *
+                 * 再次选择 A
+                 *
+                 * 再次选择 B
+                 *
+                 * 都能触发 change。
+                 */
 
-            });
+                event.target.value = "";
 
-        });
+
+            }
+        );
+
 
 
     /*
-     * 保存一组照片
+     * ============================
+     * 显示待上传照片
+     * ============================
      */
 
-    function savePhotos() {
+    function renderPreview() {
 
-        if (selectedImages.length === 0) {
+
+        const preview =
+            document.getElementById(
+                "preview"
+            );
+
+
+        const grid =
+            document.getElementById(
+                "previewGrid"
+            );
+
+
+        const count =
+            document.getElementById(
+                "photoCount"
+            );
+
+
+        /*
+         * 没有照片
+         */
+
+        if (
+            selectedImages.length === 0
+        ) {
+
+            preview.style.display =
+                "none";
+
+            grid.innerHTML = "";
+
+            count.textContent = "";
+
             return;
+
         }
 
 
+        /*
+         * 显示预览区域
+         */
+
+        preview.style.display =
+            "block";
+
+
+        /*
+         * 清空旧预览
+         */
+
+        grid.innerHTML = "";
+
+
+        /*
+         * 重新生成所有预览
+         */
+
+        selectedImages.forEach(
+            (image, index) => {
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "preview-item";
+
+
+                const img =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                img.src = image;
+
+
+                item.appendChild(img);
+
+
+
+                /*
+                 * 删除按钮
+                 */
+
+                const removeButton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                removeButton.className =
+                    "remove-preview";
+
+
+                removeButton.type =
+                    "button";
+
+
+                removeButton.textContent =
+                    "×";
+
+
+                removeButton.title =
+                    "移除这张照片";
+
+
+                removeButton.onclick =
+                    function() {
+
+                        removeSelectedImage(
+                            index
+                        );
+
+                    };
+
+
+                item.appendChild(
+                    removeButton
+                );
+
+
+                grid.appendChild(
+                    item
+                );
+
+
+            }
+        );
+
+
+        /*
+         * 数量
+         */
+
+        count.textContent =
+            `已选择 ${selectedImages.length} 张照片`;
+
+    }
+
+
+
+    /*
+     * ============================
+     * 删除待上传照片
+     * ============================
+     */
+
+    function removeSelectedImage(
+        index
+    ) {
+
+
+        selectedImages.splice(
+            index,
+            1
+        );
+
+
+        renderPreview();
+
+    }
+
+
+
+    /*
+     * ============================
+     * 保存整组照片
+     * ============================
+     */
+
+    function savePhotoGroup() {
+
+
+        /*
+         * 没有照片
+         */
+
+        if (
+            selectedImages.length === 0
+        ) {
+
+            alert(
+                "请先添加至少一张照片。"
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * 获取文字
+         */
+
         const caption =
             document
-                .getElementById("captionInput")
+                .getElementById(
+                    "captionInput"
+                )
                 .value
                 .trim();
+
+
+        /*
+         * 获取旧照片
+         */
+
+        const photos =
+            getPhotos();
+
+
+        /*
+         * 创建一组照片
+         */
+
+        const photoGroup = {
+
+            id: Date.now(),
+
+            images: [
+                ...selectedImages
+            ],
+
+            caption: caption,
+
+            time:
+                new Date().toLocaleString(
+                    "zh-CN",
+                    {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }
+                )
+
+        };
+
+
+        /*
+         * 新照片放在最前面
+         */
+
+        photos.unshift(
+            photoGroup
+        );
+
+
+        /*
+         * 保存
+         */
+
+        savePhotosToStorage(
+            photos
+        );
+
+
+        /*
+         * 清空当前待上传内容
+         */
+
+        selectedImages = [];
+
+
+        document
+            .getElementById(
+                "captionInput"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "fileInput"
+            )
+            .value = "";
+
+
+        /*
+         * 更新预览
+         */
+
+        renderPreview();
+
+
+        /*
+         * 更新照片列表
+         */
+
+        renderPhotos();
+
+    }
+
+
+
+    /*
+     * ============================
+     * 删除已经保存的一组照片
+     * ============================
+     */
+
+    function deletePhotoGroup(id) {
 
 
         const photos =
             getPhotos();
 
 
-        const photoGroup = {
-
-            id: Date.now(),
-
-            images: selectedImages,
-
-            caption: caption,
-
-            time: new Date().toLocaleString(
-                "zh-CN",
-                {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit"
-                }
-            )
-
-        };
-
-
-        photos.unshift(photoGroup);
-
-        savePhotosToStorage(photos);
-
-
-        /* 清空 */
-
-        selectedImages = [];
-
-        document.getElementById("fileInput").value = "";
-
-        document.getElementById("captionInput").value = "";
-
-        document.getElementById("previewGrid").innerHTML = "";
-
-        document.getElementById("photoCount").textContent = "";
-
-        document.getElementById("preview").style.display = "none";
-
-
-        renderPhotos();
-
-    }
-
-
-    /*
-     * 删除一组照片
-     */
-
-    function deletePhotoGroup(id) {
-
-        const photos = getPhotos();
-
         const newPhotos =
             photos.filter(
-                photo => photo.id !== id
+                photo =>
+                    photo.id !== id
             );
 
-        savePhotosToStorage(newPhotos);
+
+        savePhotosToStorage(
+            newPhotos
+        );
+
 
         renderPhotos();
 
     }
 
 
+
     /*
-     * 显示照片
+     * ============================
+     * 显示已经保存的照片
+     * ============================
      */
 
     function renderPhotos() {
 
+
         const container =
-            document.getElementById("photos");
+            document.getElementById(
+                "photos"
+            );
 
-        const photos = getPhotos();
+
+        const photos =
+            getPhotos();
 
 
-        if (photos.length === 0) {
+        /*
+         * 没有照片
+         */
+
+        if (
+            photos.length === 0
+        ) {
 
             container.innerHTML =
                 '<div class="empty">还没有照片。</div>';
@@ -532,66 +1091,117 @@
         }
 
 
-        container.innerHTML = photos.map(photo => `
+        /*
+         * 生成照片时间线
+         */
 
-            <div class="photo-entry">
+        container.innerHTML =
+            photos
+                .map(
+                    photo => `
 
-                <div class="photo-time">
-                    ${photo.time}
-                </div>
+                    <div class="photo-entry">
 
-                <div class="photo-grid">
+                        <div class="photo-time">
+                            ${photo.time}
+                        </div>
 
-                    ${photo.images.map(image => `
 
-                        <img
-                            src="${image}"
-                            alt="我的照片"
+                        <div class="photo-grid">
+
+                            ${photo.images
+                                .map(
+                                    image => `
+
+                                    <img
+                                        src="${image}"
+                                        alt="我的照片"
+                                    >
+
+                                `
+                                )
+                                .join("")
+                            }
+
+                        </div>
+
+
+                        ${
+                            photo.caption
+                            ?
+                            `
+                            <div class="photo-caption">
+                                ${escapeHTML(
+                                    photo.caption
+                                )}
+                            </div>
+                            `
+                            :
+                            ""
+                        }
+
+
+                        <button
+                            class="delete-btn"
+                            onclick="deletePhotoGroup(
+                                ${photo.id}
+                            )"
                         >
+                            删除这一组
+                        </button>
 
-                    `).join("")}
+                    </div>
 
-                </div>
-
-
-                ${
-                    photo.caption
-                    ?
-                    `<div class="photo-caption">
-                        ${escapeHTML(photo.caption)}
-                    </div>`
-                    :
-                    ""
-                }
-
-
-                <button
-                    class="delete-btn"
-                    onclick="deletePhotoGroup(${photo.id})"
-                >
-                    删除这一组
-                </button>
-
-            </div>
-
-        `).join("");
+                `
+                )
+                .join("");
 
     }
 
+
+
+    /*
+     * ============================
+     * 防止文字破坏 HTML
+     * ============================
+     */
 
     function escapeHTML(text) {
 
         return text
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
 
     }
 
 
+
+    /*
+     * ============================
+     * 页面打开时显示照片
+     * ============================
+     */
+
     renderPhotos();
+
 
 </script>
 
