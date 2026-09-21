@@ -1,1 +1,514 @@
-<!-- 002 Photos -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Photos · LYEI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f7f7f5;
+            color: #222;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "PingFang SC",
+                "Microsoft YaHei",
+                sans-serif;
+        }
+
+        .container {
+            width: min(1000px, 92%);
+            margin: 0 auto;
+            padding: 70px 0 100px;
+        }
+
+        /* 顶部 */
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 70px;
+        }
+
+        .title {
+            margin: 0;
+            font-size: 46px;
+            font-weight: 600;
+            letter-spacing: -0.05em;
+        }
+
+        .subtitle {
+            margin-top: 10px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .back {
+            color: #222;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+        /* 上传区域 */
+
+        .upload-box {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 70px;
+        }
+
+        .upload-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            width: 100%;
+            padding: 18px;
+            border: 1px dashed #ccc;
+            border-radius: 10px;
+            background: #fafafa;
+            cursor: pointer;
+        }
+
+        .preview {
+            display: none;
+            margin-top: 25px;
+        }
+
+        .preview img {
+            display: block;
+            max-width: 100%;
+            max-height: 600px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .caption-input {
+            width: 100%;
+            min-height: 90px;
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            outline: none;
+            font-family: inherit;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .save-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+        }
+
+        .save-btn {
+            border: none;
+            background: #222;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .save-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* 时间线 */
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        .photo-entry {
+            margin-bottom: 70px;
+        }
+
+        .photo-time {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .photo-image {
+            width: 100%;
+            max-height: 750px;
+            object-fit: contain;
+            object-position: left center;
+            display: block;
+            background: #eee;
+            border-radius: 8px;
+        }
+
+        .photo-caption {
+            margin-top: 16px;
+            white-space: pre-wrap;
+            font-size: 15px;
+            line-height: 1.8;
+            max-width: 700px;
+        }
+
+        .delete-btn {
+            margin-top: 12px;
+            padding: 0;
+            border: none;
+            background: none;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .delete-btn:hover {
+            color: #555;
+        }
+
+        .empty {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* 手机 */
+
+        @media (max-width: 600px) {
+
+            .container {
+                padding-top: 40px;
+            }
+
+            .top {
+                margin-bottom: 45px;
+            }
+
+            .title {
+                font-size: 36px;
+            }
+
+            .upload-box {
+                padding: 20px;
+            }
+
+            .photo-image {
+                max-height: 500px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- 顶部 -->
+
+    <div class="top">
+
+        <div>
+            <h1 class="title">PHOTOS</h1>
+
+            <div class="subtitle">
+                一些想留下来的画面。
+            </div>
+        </div>
+
+        <a class="back" href="../index.html">
+            ← 返回首页
+        </a>
+
+    </div>
+
+
+    <!-- 上传 -->
+
+    <div class="upload-box">
+
+        <div class="upload-title">
+            留下一张照片
+        </div>
+
+        <input
+            id="fileInput"
+            class="file-input"
+            type="file"
+            accept="image/*"
+        >
+
+        <div id="preview" class="preview">
+
+            <img id="previewImage" src="" alt="照片预览">
+
+            <textarea
+                id="captionInput"
+                class="caption-input"
+                placeholder="写点什么……（可以不写）"
+            ></textarea>
+
+            <div class="save-row">
+
+                <button
+                    class="save-btn"
+                    onclick="savePhoto()"
+                >
+                    保存照片
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 照片时间线 -->
+
+    <div class="section-title">
+        我的照片
+    </div>
+
+    <div id="photos"></div>
+
+</div>
+
+
+<script>
+
+    const STORAGE_KEY = "lyei_photos";
+
+    let selectedImage = null;
+
+
+    /* 读取照片 */
+
+    function getPhotos() {
+
+        return JSON.parse(
+            localStorage.getItem(STORAGE_KEY) || "[]"
+        );
+
+    }
+
+
+    /* 保存照片 */
+
+    function savePhotos(photos) {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(photos)
+        );
+
+    }
+
+
+    /* 选择照片 */
+
+    document
+        .getElementById("fileInput")
+        .addEventListener("change", function(event) {
+
+            const file = event.target.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+
+                selectedImage = e.target.result;
+
+                document
+                    .getElementById("previewImage")
+                    .src = selectedImage;
+
+                document
+                    .getElementById("preview")
+                    .style.display = "block";
+
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+
+    /* 保存 */
+
+    function savePhoto() {
+
+        if (!selectedImage) {
+            return;
+        }
+
+        const caption =
+            document
+                .getElementById("captionInput")
+                .value
+                .trim();
+
+
+        const photos = getPhotos();
+
+
+        const photo = {
+
+            id: Date.now(),
+
+            image: selectedImage,
+
+            caption: caption,
+
+            time: new Date().toLocaleString(
+                "zh-CN",
+                {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            )
+
+        };
+
+
+        photos.unshift(photo);
+
+        savePhotos(photos);
+
+
+        /* 清空 */
+
+        selectedImage = null;
+
+        document.getElementById("fileInput").value = "";
+
+        document.getElementById("captionInput").value = "";
+
+        document.getElementById("preview").style.display = "none";
+
+        document.getElementById("previewImage").src = "";
+
+
+        renderPhotos();
+
+    }
+
+
+    /* 删除 */
+
+    function deletePhoto(id) {
+
+        const photos = getPhotos();
+
+        const newPhotos =
+            photos.filter(
+                photo => photo.id !== id
+            );
+
+        savePhotos(newPhotos);
+
+        renderPhotos();
+
+    }
+
+
+    /* 显示照片 */
+
+    function renderPhotos() {
+
+        const container =
+            document.getElementById("photos");
+
+        const photos = getPhotos();
+
+
+        if (photos.length === 0) {
+
+            container.innerHTML =
+                '<div class="empty">还没有照片。</div>';
+
+            return;
+
+        }
+
+
+        container.innerHTML = photos.map(photo => `
+
+            <div class="photo-entry">
+
+                <div class="photo-time">
+                    ${photo.time}
+                </div>
+
+                <img
+                    class="photo-image"
+                    src="${photo.image}"
+                    alt="我的照片"
+                >
+
+                ${
+                    photo.caption
+                    ?
+                    `<div class="photo-caption">
+                        ${escapeHTML(photo.caption)}
+                    </div>`
+                    :
+                    ""
+                }
+
+                <button
+                    class="delete-btn"
+                    onclick="deletePhoto(${photo.id})"
+                >
+                    删除
+                </button>
+
+            </div>
+
+        `).join("");
+
+    }
+
+
+    /* 防止文字破坏页面 */
+
+    function escapeHTML(text) {
+
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    renderPhotos();
+
+</script>
+
+</body>
+</html>
