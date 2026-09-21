@@ -30,8 +30,6 @@
             padding: 70px 0 100px;
         }
 
-        /* 顶部 */
-
         .top {
             display: flex;
             justify-content: space-between;
@@ -86,17 +84,38 @@
             cursor: pointer;
         }
 
+        /* 多张图片预览 */
+
         .preview {
             display: none;
             margin-top: 25px;
         }
 
-        .preview img {
-            display: block;
-            max-width: 100%;
-            max-height: 600px;
-            object-fit: contain;
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .preview-item {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
             border-radius: 8px;
+            background: #eee;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-count {
+            margin-top: 15px;
+            color: #888;
+            font-size: 13px;
         }
 
         .caption-input {
@@ -151,14 +170,19 @@
             margin-bottom: 15px;
         }
 
-        .photo-image {
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .photo-grid img {
             width: 100%;
-            max-height: 750px;
-            object-fit: contain;
-            object-position: left center;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
             display: block;
-            background: #eee;
             border-radius: 8px;
+            background: #eee;
         }
 
         .photo-caption {
@@ -188,8 +212,6 @@
             font-size: 14px;
         }
 
-        /* 手机 */
-
         @media (max-width: 600px) {
 
             .container {
@@ -208,8 +230,13 @@
                 padding: 20px;
             }
 
-            .photo-image {
-                max-height: 500px;
+            .preview-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
             }
         }
     </style>
@@ -218,8 +245,6 @@
 <body>
 
 <div class="container">
-
-    <!-- 顶部 -->
 
     <div class="top">
 
@@ -243,7 +268,7 @@
     <div class="upload-box">
 
         <div class="upload-title">
-            留下一张照片
+            留下一些照片
         </div>
 
         <input
@@ -251,11 +276,20 @@
             class="file-input"
             type="file"
             accept="image/*"
+            multiple
         >
 
         <div id="preview" class="preview">
 
-            <img id="previewImage" src="" alt="照片预览">
+            <div
+                id="previewGrid"
+                class="preview-grid"
+            ></div>
+
+            <div
+                id="photoCount"
+                class="photo-count"
+            ></div>
 
             <textarea
                 id="captionInput"
@@ -267,9 +301,9 @@
 
                 <button
                     class="save-btn"
-                    onclick="savePhoto()"
+                    onclick="savePhotos()"
                 >
-                    保存照片
+                    保存这些照片
                 </button>
 
             </div>
@@ -294,10 +328,8 @@
 
     const STORAGE_KEY = "lyei_photos";
 
-    let selectedImage = null;
+    let selectedImages = [];
 
-
-    /* 读取照片 */
 
     function getPhotos() {
 
@@ -308,9 +340,7 @@
     }
 
 
-    /* 保存照片 */
-
-    function savePhotos(photos) {
+    function savePhotosToStorage(photos) {
 
         localStorage.setItem(
             STORAGE_KEY,
@@ -320,46 +350,87 @@
     }
 
 
-    /* 选择照片 */
+    /*
+     * 选择一张或多张照片
+     */
 
     document
         .getElementById("fileInput")
         .addEventListener("change", function(event) {
 
-            const file = event.target.files[0];
+            const files = Array.from(event.target.files);
 
-            if (!file) {
+            if (!files.length) {
                 return;
             }
 
-            const reader = new FileReader();
+            selectedImages = [];
 
-            reader.onload = function(e) {
+            const previewGrid =
+                document.getElementById("previewGrid");
 
-                selectedImage = e.target.result;
+            previewGrid.innerHTML = "";
 
-                document
-                    .getElementById("previewImage")
-                    .src = selectedImage;
+            let loaded = 0;
 
-                document
-                    .getElementById("preview")
-                    .style.display = "block";
 
-            };
+            files.forEach(file => {
 
-            reader.readAsDataURL(file);
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+
+                    selectedImages.push(e.target.result);
+
+                    const item =
+                        document.createElement("div");
+
+                    item.className = "preview-item";
+
+                    const img =
+                        document.createElement("img");
+
+                    img.src = e.target.result;
+
+                    item.appendChild(img);
+
+                    previewGrid.appendChild(item);
+
+
+                    loaded++;
+
+                    if (loaded === files.length) {
+
+                        document
+                            .getElementById("preview")
+                            .style.display = "block";
+
+                        document
+                            .getElementById("photoCount")
+                            .textContent =
+                            `已选择 ${files.length} 张照片`;
+
+                    }
+
+                };
+
+                reader.readAsDataURL(file);
+
+            });
 
         });
 
 
-    /* 保存 */
+    /*
+     * 保存一组照片
+     */
 
-    function savePhoto() {
+    function savePhotos() {
 
-        if (!selectedImage) {
+        if (selectedImages.length === 0) {
             return;
         }
+
 
         const caption =
             document
@@ -368,14 +439,15 @@
                 .trim();
 
 
-        const photos = getPhotos();
+        const photos =
+            getPhotos();
 
 
-        const photo = {
+        const photoGroup = {
 
             id: Date.now(),
 
-            image: selectedImage,
+            images: selectedImages,
 
             caption: caption,
 
@@ -393,22 +465,24 @@
         };
 
 
-        photos.unshift(photo);
+        photos.unshift(photoGroup);
 
-        savePhotos(photos);
+        savePhotosToStorage(photos);
 
 
         /* 清空 */
 
-        selectedImage = null;
+        selectedImages = [];
 
         document.getElementById("fileInput").value = "";
 
         document.getElementById("captionInput").value = "";
 
-        document.getElementById("preview").style.display = "none";
+        document.getElementById("previewGrid").innerHTML = "";
 
-        document.getElementById("previewImage").src = "";
+        document.getElementById("photoCount").textContent = "";
+
+        document.getElementById("preview").style.display = "none";
 
 
         renderPhotos();
@@ -416,9 +490,11 @@
     }
 
 
-    /* 删除 */
+    /*
+     * 删除一组照片
+     */
 
-    function deletePhoto(id) {
+    function deletePhotoGroup(id) {
 
         const photos = getPhotos();
 
@@ -427,14 +503,16 @@
                 photo => photo.id !== id
             );
 
-        savePhotos(newPhotos);
+        savePhotosToStorage(newPhotos);
 
         renderPhotos();
 
     }
 
 
-    /* 显示照片 */
+    /*
+     * 显示照片
+     */
 
     function renderPhotos() {
 
@@ -462,11 +540,19 @@
                     ${photo.time}
                 </div>
 
-                <img
-                    class="photo-image"
-                    src="${photo.image}"
-                    alt="我的照片"
-                >
+                <div class="photo-grid">
+
+                    ${photo.images.map(image => `
+
+                        <img
+                            src="${image}"
+                            alt="我的照片"
+                        >
+
+                    `).join("")}
+
+                </div>
+
 
                 ${
                     photo.caption
@@ -478,11 +564,12 @@
                     ""
                 }
 
+
                 <button
                     class="delete-btn"
-                    onclick="deletePhoto(${photo.id})"
+                    onclick="deletePhotoGroup(${photo.id})"
                 >
-                    删除
+                    删除这一组
                 </button>
 
             </div>
@@ -491,8 +578,6 @@
 
     }
 
-
-    /* 防止文字破坏页面 */
 
     function escapeHTML(text) {
 
